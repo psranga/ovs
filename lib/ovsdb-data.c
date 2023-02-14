@@ -1173,7 +1173,14 @@ ovsdb_datum_sort(struct ovsdb_datum *datum, const struct ovsdb_type *type)
             if (datum->values) {
                 return ovsdb_error(NULL, "map contains duplicate key");
             } else {
-                return ovsdb_error(NULL, "set contains duplicate");
+                // OVSDB_TYPE_VOID,            /* No value. */
+                // OVSDB_TYPE_INTEGER,         /* Signed 64-bit integer. */
+                // OVSDB_TYPE_REAL,            /* IEEE 754 double-precision floating point. */
+                // OVSDB_TYPE_BOOLEAN,         /* True or false. */
+                // OVSDB_TYPE_STRING,          /* UTF-8 string. */
+                // OVSDB_TYPE_UUID,            /* RFC 4122 UUID referencing a table row. */
+                // OVSDB_N_TYPES
+                return ovsdb_error(NULL, "set contains duplicate i=%lu n=%d type: %d (INTEGER %d STRING %d, UUID %d)", i, datum->n, type->key.type, OVSDB_TYPE_INTEGER, OVSDB_TYPE_STRING, OVSDB_TYPE_UUID);
             }
         }
     }
